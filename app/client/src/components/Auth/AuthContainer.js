@@ -19,6 +19,9 @@ export default function AuthContainer(props) {
           path="/user/authentication-services/recover-password/:token"
           component={ResetPassword}
         />
+        <Route>
+          <div>404</div>
+        </Route>
       </Switch>
     </Router>
   );

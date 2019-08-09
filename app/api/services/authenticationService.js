@@ -36,11 +36,19 @@ exports.decodeToken = async token => {
   }
 };
 
-exports.generateToken = async payload => {
+exports.verifyToken = token => {
   try {
-    return await jwt.sign(payload, keys.jwtSecret, { expiresIn: 7200 });
+    return jwt.verify(token, keys.jwtSecret);
   } catch (e) {
-    console.log(e);
+    throw serverError();
+  }
+};
+
+exports.generateToken = async (payload, expiresIn) => {
+  try {
+    expiresIn = expiresIn ? { expiresIn } : null;
+    return await jwt.sign(payload, keys.jwtSecret, expiresIn);
+  } catch (e) {
     throw serverError();
   }
 };

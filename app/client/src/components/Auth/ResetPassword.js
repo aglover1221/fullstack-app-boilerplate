@@ -5,6 +5,7 @@ import keys from "../../config/keys";
 //components
 import LoadingContainer from "../General/Loading";
 import FormError from "../General/Forms/FormError";
+import FullPageError from "../General/FullPageError";
 import { FormInput, FormSubmit } from "../General/Forms/FormInputs";
 
 //actions
@@ -39,18 +40,22 @@ class ResetPassword extends Component {
       const decoded = jwt.verify(this.props.match.params.token, keys.jwtSecret);
       this.setState({ token: this.props.match.params.token });
     } catch (e) {
-      this.setState({ errors: "Something went wrong with your verification." });
+      this.setState({
+        errors: "Your link has expired get a new one to recover your password."
+      });
     }
   }
 
   render() {
-    const { password, confirm, errors, loading } = this.state;
+    const { password, confirm, messages, errors, loading } = this.state;
     return (
       <div>
-        <form>
-          <h1>Reset Password</h1>
+        <form className="form-container">
+          <div className="form-title">
+            <h1>Reset Password</h1>
+          </div>
           <LoadingContainer loading={loading} />
-          <FormError error={errors ? errors.err : null} />
+          <FormError errors={errors ? errors.err : null} />
           <FormInput
             onChange={this.onChange}
             value={password}

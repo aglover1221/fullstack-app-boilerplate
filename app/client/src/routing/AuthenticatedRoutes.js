@@ -1,8 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
 
-//route = /home/*
-export default function AuthenticatedRoutes(props) {
+/**
+ * @private true
+ * @route   /home/*
+ * @param   user object
+ */
+const AuthenticatedRoutes = props => {
   const { user } = props;
   return (
     <Switch>
@@ -14,4 +19,10 @@ export default function AuthenticatedRoutes(props) {
       </Route>
     </Switch>
   );
-}
+};
+
+const mapStateToProps = state => ({
+  user: state.auth.user
+});
+
+export default connect(mapStateToProps)(AuthenticatedRoutes);

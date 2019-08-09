@@ -12,19 +12,10 @@ exports.create = async data => {
   }
 };
 
-exports.get = async query => {
+exports.get = async (query, selection) => {
   try {
-    const user = await User.findOne(query);
-    return user;
-  } catch (e) {
-    throw serverError();
-  }
-};
-
-exports.get_nopassword = async query => {
-  try {
-    const user = await User.findOne(query);
-    if (user) delete user._doc.password;
+    selection = selection ? selection : "";
+    const user = await User.findOne(query).select(selection);
     return user;
   } catch (e) {
     throw serverError();
@@ -45,7 +36,6 @@ exports.update = async userUpdated => {
     if (user) delete user._doc.password;
     return user;
   } catch (e) {
-    console.log(e);
     throw serverError();
   }
 };
@@ -53,6 +43,15 @@ exports.update = async userUpdated => {
 exports.updateWithQuery = async (query, updates) => {
   try {
     return await User.updateOne(query, updates, { runValidators: true });
+  } catch (e) {
+    throw serverError();
+  }
+};
+
+exports.delete = async query => {
+  try {
+    await User.deleteOne(query);
+    return;
   } catch (e) {
     throw serverError();
   }

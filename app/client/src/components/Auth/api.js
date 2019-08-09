@@ -45,7 +45,11 @@ export const forgotPassword = async cmp => {
   try {
     let input = { email };
     let res = await axios.post("/api/user/recover-password", input);
-    cmp.setState({ messages: "Recovery email sent", loading: false });
+    cmp.setState({
+      messages: "Your password reset link has been sent to your email.",
+      errors: null,
+      loading: false
+    });
   } catch (e) {
     cmp.setState({ errors: e.response.data.data, loading: false });
   }
@@ -56,7 +60,7 @@ export const resetPassword = async cmp => {
   const { token, password, confirm } = cmp.state;
   try {
     let input = { token, password, confirm };
-    let res = await axios.put("/api/user/reset-password", input);
+    await axios.put("/api/user/reset-password", input);
     window.location.href = "/user/login";
   } catch (e) {
     cmp.setState({ errors: e.response.data.data, loading: false });

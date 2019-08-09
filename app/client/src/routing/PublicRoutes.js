@@ -3,8 +3,12 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import ConfirmEmail from "../components/Auth/ConfirmEmail";
 
+/**
+ * @private false
+ * @route   /*
+ * @param   none
+ */
 const Public = props => {
-  const { user } = props;
   return (
     <Switch>
       <Route
@@ -12,6 +16,9 @@ const Public = props => {
         path="/public/user/authentication-services/confirm-email/:token"
         component={ConfirmEmail}
       />
+      <Route>
+        <div>404</div>
+      </Route>
     </Switch>
   );
 };

@@ -3,6 +3,7 @@ import React, { Component } from "react";
 //components
 import LoadingContainer from "../General/Loading";
 import FormError from "../General/Forms/FormError";
+import FullPageMessage from "../General/FullPageMessage";
 import { FormInput, FormSubmit } from "../General/Forms/FormInputs";
 
 //actions
@@ -13,7 +14,6 @@ class ForgotPassword extends Component {
     super();
     this.state = {
       email: "",
-      password: "",
       loading: false,
       errors: null,
       messages: null
@@ -32,29 +32,35 @@ class ForgotPassword extends Component {
   }
 
   render() {
-    const { email, password, errors, loading } = this.state;
-    return (
-      <div>
-        <form>
-          <h1>Recover Password</h1>
-          <LoadingContainer loading={loading} />
-          <FormError error={errors ? errors.err : null} />
-          <FormInput
-            onChange={this.onChange}
-            value={email}
-            name="email"
-            type="text"
-            placeholder="email"
-            error={errors ? errors.email : null}
-          />
-          <FormSubmit
-            text="send"
-            disabled={loading}
-            onClick={this.forgotPassword}
-          />
-        </form>
-      </div>
-    );
+    const { email, messages, errors, loading } = this.state;
+    if (messages) {
+      return <FullPageMessage message={messages} />;
+    } else {
+      return (
+        <div className="form-container">
+          <form>
+            <div className="form-title">
+              <h1>Forgot my Password</h1>
+            </div>
+            <LoadingContainer loading={loading} />
+            <FormError errors={errors ? errors.err : null} />
+            <FormInput
+              onChange={this.onChange}
+              value={email}
+              name="email"
+              type="text"
+              placeholder="email"
+              error={errors ? errors.email : null}
+            />
+            <FormSubmit
+              text="send"
+              disabled={loading}
+              onClick={this.forgotPassword}
+            />
+          </form>
+        </div>
+      );
+    }
   }
 }
 

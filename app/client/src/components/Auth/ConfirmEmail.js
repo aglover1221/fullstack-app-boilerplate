@@ -4,6 +4,7 @@ import keys from "../../config/keys";
 
 //components
 import { LoadingDash } from "../General/Loading";
+import FullPageMessage from "../General/FullPageMessage";
 
 //actions
 import { confirmEmail } from "./api";
@@ -44,11 +45,7 @@ class ConfirmEmail extends Component {
         </div>
       );
     } else if (messages) {
-      return (
-        <div>
-          <p>{messages}</p>
-        </div>
-      );
+      return <FullPageMessage message={messages} />;
     } else {
       return (
         <div>

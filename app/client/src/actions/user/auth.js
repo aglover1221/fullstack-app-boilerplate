@@ -25,6 +25,7 @@ export const getUser = () => async dispatch => {
       res.data.authenticated
     );
   } catch (e) {
+    localStorage.removeItem("User_Authenticator_Token");
     setAuthStatus(dispatch, null, null, false);
   } finally {
     dispatch({ type: LOADING_FALSE, payload: false });

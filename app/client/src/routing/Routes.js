@@ -12,14 +12,16 @@ import UnAuthenticatedRoutes from "./UnAuthenticatedRoutes";
 //either authenticated or not
 import PublicRoutes from "./PublicRoutes";
 
-const Routes = props => {
+const Routes = () => {
   return (
     <Router>
-      <Switch>
-        <PrivateRoute path="/home" component={AuthenticatedRoutes} />
-        <Route path="/public" component={PublicRoutes} />
-        <AuthProtected path="/" component={UnAuthenticatedRoutes} />
-      </Switch>
+      <div className="container">
+        <Switch>
+          <PrivateRoute path="/home" component={AuthenticatedRoutes} />
+          <Route path="/public" component={PublicRoutes} />
+          <AuthProtected path="/" component={UnAuthenticatedRoutes} />
+        </Switch>
+      </div>
     </Router>
   );
 };

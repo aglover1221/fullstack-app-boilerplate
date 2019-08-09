@@ -7,6 +7,8 @@ const validateUser = require("../../validation/validateUser");
 const jwt = require("jsonwebtoken");
 const keys = require("../../../config/keys");
 
+const twoDays = 172800;
+
 exports.test = async (req, res) => {
   return res.json({ status: "working" });
 };
@@ -16,7 +18,7 @@ exports.getAuthenticatedUser = async (req, res) => {
     const { user } = req;
     if (user) {
       let [token, authenticated] = [
-        await authenticationService.generateToken(user),
+        await authenticationService.generateToken(user, twoDays),
         true
       ];
       return res.json({ user, token, authenticated });
@@ -55,7 +57,8 @@ exports.create = async (req, res) => {
       updated: Date.now(),
       emailData: { token: emailToken, emailVerified: false }
     });
-    const token = await authenticationService.generateToken(user._doc);
+
+    const token = await authenticationService.generateToken(user._doc, twoDays);
     await mailService.sendEmail({
       to: user._doc.email,
       subject: "Confirm your email",
@@ -64,6 +67,16 @@ exports.create = async (req, res) => {
       link: true
     });
     return res.json({ token, user: user._doc, authenticated: true });
+  } catch (e) {
+    return res.status(e.meta.statusCode).json({ data: e.data, meta: e.meta });
+  }
+};
+
+exports.delete = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    await userService.delete({ _id });
+    return res.json({ status: "good", action: "delete" });
   } catch (e) {
     return res.status(e.meta.statusCode).json({ data: e.data, meta: e.meta });
   }
@@ -85,7 +98,7 @@ exports.authenticate = async (req, res) => {
       await authenticationService.comparePasswords(password, user._doc.password)
     ) {
       delete user._doc.password;
-      let token = await authenticationService.generateToken(user._doc);
+      let token = await authenticationService.generateToken(user._doc, twoDays);
       return res.json({ token, user, authenticated: true });
     } else {
       throw formError(
@@ -104,11 +117,14 @@ exports.sendPasswordLink = async (req, res) => {
     const { email } = req.body;
     const user = await userService.get({ email });
     if (user) {
-      const passwordToken = await authenticationService.generateToken({
-        name: user._doc.name,
-        email: user._doc.email,
-        date: Date.now()
-      });
+      const passwordToken = await authenticationService.generateToken(
+        {
+          name: user._doc.name,
+          email: user._doc.email,
+          date: Date.now()
+        },
+        twoDays
+      );
       user.emailData.passwordToken = passwordToken;
       const updatedUser = await userService.update(user);
 
@@ -121,7 +137,7 @@ exports.sendPasswordLink = async (req, res) => {
         link: true
       });
 
-      return res.json({ status: "good", action: "sent" });
+      return res.json({ status: "good", action: "email" });
     } else {
       throw generalError("No user with this email found.", 400, "get", false);
     }
@@ -133,11 +149,11 @@ exports.sendPasswordLink = async (req, res) => {
 exports.resetPassword = async (req, res) => {
   try {
     const { token, password, confirm } = req.body;
-    const { valid, errors } = validateUser({ password, confirm });
+    const { errors } = validateUser({ password, confirm });
     if (errors.password) {
       throw formError(errors.password, "create", true);
     }
-    const decoded = jwt.verify(token, keys.jwtSecret);
+    const decoded = authenticationService.verifyToken(token);
     const user = await userService.get({
       name: decoded.name,
       email: decoded.email,

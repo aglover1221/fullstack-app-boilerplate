@@ -35,11 +35,13 @@ class Register extends Component {
   render() {
     const { email, name, password, confirm, errors, loading } = this.state;
     return (
-      <div>
+      <div className="form-container">
         <form>
-          <h1>Register</h1>
+          <div className="form-title">
+            <h1>Register</h1>
+          </div>
           <LoadingContainer loading={loading} />
-          <FormError error={errors ? errors.err : null} />
+          <FormError errors={errors ? errors.err : null} />
           <FormInput
             onChange={this.onChange}
             value={email}

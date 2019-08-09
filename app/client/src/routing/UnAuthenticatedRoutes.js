@@ -5,7 +5,11 @@ import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import AuthContainer from "../components/Auth/AuthContainer";
 import Landing from "../components/General/Landing";
 
-//route = /*
+/**
+ * @private false
+ * @route   /*
+ * @param   none
+ */
 export default function UnAuthenticatedRoutes() {
   return (
     <Switch>
