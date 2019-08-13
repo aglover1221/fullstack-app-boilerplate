@@ -3,7 +3,7 @@ const keys = require("../../config/keys");
 
 const jwt = require("jsonwebtoken");
 
-const cache = async (req, res, next) => {
+const authenticate = async (req, res, next) => {
   const userCache = require("../services/cache/userCache");
   const token = req.header("Authorization");
 
@@ -39,7 +39,7 @@ const cache = async (req, res, next) => {
   }
 };
 
-module.exports = cache;
+module.exports = authenticate;
 
 /*
 const noCache = async (req, res, next) => {
