@@ -36,7 +36,7 @@ exports.update = async userUpdated => {
     const user = await userUpdated.save();
     if (user) {
       delete user._doc.password;
-      userCache.set(user._doc._id, user._doc);
+      userCache.set(user._doc._id, JSON.stringify(user._doc));
     }
     return user;
   } catch (e) {

@@ -18,7 +18,7 @@ const authenticate = async (req, res, next) => {
       return res.status(401).json({ msg: "Expired token" });
     }
 
-    const cachedUser = userCache.check(decoded._id);
+    const cachedUser = await userCache.check(decoded._id);
 
     if (cachedUser) {
       req.user = JSON.parse(cachedUser);
@@ -35,6 +35,7 @@ const authenticate = async (req, res, next) => {
       }
     }
   } catch (err) {
+    console.log(err);
     res.status(401).json({ msg: "Token is not valid" });
   }
 };

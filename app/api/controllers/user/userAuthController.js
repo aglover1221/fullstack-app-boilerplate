@@ -4,7 +4,6 @@ const authenticationService = require("../../services/authenticationService");
 const mailService = require("../../services/mailService");
 const validateUser = require("../../validation/validateUser");
 
-const jwt = require("jsonwebtoken");
 const keys = require("../../../config/keys");
 
 const twoDays = 172800;
