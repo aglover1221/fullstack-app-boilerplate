@@ -3,7 +3,7 @@ import React, { Component } from "react";
 //components
 import LoadingContainer from "../General/Loading";
 import FormError from "../General/Forms/FormError";
-import FullPageMessage from "../General/FullPageMessage";
+import { FullPageMessage } from "../General/FullPageInfo";
 import { FormInput, FormSubmit } from "../General/Forms/FormInputs";
 
 //actions

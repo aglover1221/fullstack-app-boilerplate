@@ -4,7 +4,7 @@ import keys from "../../config/keys";
 
 //components
 import { LoadingDash } from "../General/Loading";
-import FullPageMessage from "../General/FullPageMessage";
+import { FullPageMessage } from "../General/FullPageInfo";
 
 //actions
 import { confirmEmail } from "./api";

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 //Loading
-import LoadingDash from "../components/General/LoadingDash";
+import { LoadingDash } from "../components/General/Loading";
 
 import Routes from "./Routes";
 

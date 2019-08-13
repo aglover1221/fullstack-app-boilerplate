@@ -5,7 +5,6 @@ import keys from "../../config/keys";
 //components
 import LoadingContainer from "../General/Loading";
 import FormError from "../General/Forms/FormError";
-import FullPageError from "../General/FullPageError";
 import { FormInput, FormSubmit } from "../General/Forms/FormInputs";
 
 //actions
