@@ -1,6 +1,7 @@
 import axios from "axios";
 import store from "../../store";
 import { setAuthStatus } from "../../actions/user/auth";
+import history from "../../utils/history";
 
 const { dispatch } = store;
 
@@ -16,6 +17,7 @@ export const login = async cmp => {
       res.data.user,
       res.data.authenticated
     );
+    history.push("/home");
   } catch (e) {
     cmp.setState({ errors: e.response.data.data, loading: false });
   }
@@ -34,6 +36,7 @@ export const register = async cmp => {
       res.data.user,
       res.data.authenticated
     );
+    history.push("/home");
   } catch (e) {
     cmp.setState({ errors: e.response.data.data, loading: false });
   }
@@ -44,7 +47,7 @@ export const forgotPassword = async cmp => {
   const { email } = cmp.state;
   try {
     let input = { email };
-    let res = await axios.post("/api/user/recover-password", input);
+    await axios.post("/api/user/recover-password", input);
     cmp.setState({
       messages: "Your password reset link has been sent to your email.",
       errors: null,
@@ -72,7 +75,7 @@ export const confirmEmail = async cmp => {
   const { token } = cmp.state;
   try {
     let input = { token };
-    let res = await axios.put("/api/user/confirm-email", input);
+    await axios.put("/api/user/confirm-email", input);
     cmp.setState({ messages: "Email confirmed", loading: false });
   } catch (e) {
     cmp.setState({ errors: e.response.data.data, loading: false });
